@@ -13,4 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-TAP_DANCE_ENABLE = yes
+RGBLIGHT_ENABLE = yes # Enables QMK's RGB code
+RGBLIGHT_DRIVER = ws2812
+WS2812_DRIVER_REQUIRED = yes
+WS2812_DRIVER = vendor # Use the RP2040's PIO interface
+
+UNICODEMAP_ENABLE = yes
+
+CONSOLE_ENABLE = yes
+

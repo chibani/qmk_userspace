@@ -22,7 +22,7 @@
 #    define RGB_MATRIX_KEYPRESSES
 #    define ENABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE
 #    define ENABLE_RGB_MATRIX_SOLID_SPLASH
-#    define ENABLE_RGB_MATRIX_RAINBOW_BEACON 
+#    define ENABLE_RGB_MATRIX_RAINBOW_BEACON
 #endif
 
 // Not yet available in `keymap.json` format
@@ -35,3 +35,14 @@
 
 #define TAPPING_TERM 175
 #define TAPPING_TERM_PER_KEY
+
+#ifdef RGBLIGHT_ENABLE
+    #undef WS2812_DI_PIN
+    #define WS2812_DI_PIN D3
+    #undef RGBLIGHT_LED_COUNT
+    #define RGBLIGHT_LED_COUNT 46
+    #undef RGBLED_SPLIT
+    #define RGBLED_SPLIT {23, 23}
+#endif
+
+#define UNICODE_SELECTED_MODES UNICODE_MODE_LINUX
