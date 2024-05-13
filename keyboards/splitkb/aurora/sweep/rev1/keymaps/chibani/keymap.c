@@ -1,6 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "chibani.h"
-#include "print.h"
+// #include "print.h"
 #include "keymap_us_international.h"
 #include "sendstring_us_international.h"
 
@@ -66,7 +66,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     // MEDIA
     [_MEDIA] = LAYOUT(
-        RGB_TOG, RGB_SPI, RGB_HUI, RGB_SAI, RGB_VAI,                     KC_TRNS, KC_MRWD, KC_MPLY, KC_MFFD, KC_VOLU,
+        RGB_TOG, RGB_SPI, RGB_HUI, RGB_SAI, RGB_VAI,                     KC_TRNS, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,
         RGB_MOD, KC_BTN2, KC_NO, KC_BTN1, KC_TRNS,                       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MUTE,
         RGB_RMOD, RGB_SPD, RGB_HUD, RGB_SAD, RGB_VAD,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_VOLD,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
