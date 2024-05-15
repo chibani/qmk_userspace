@@ -1,6 +1,5 @@
-#include QMK_KEYBOARD_H
 #include "chibani.h"
-// #include "print.h"
+#include "print.h"
 #include "keymap_us_international.h"
 #include "sendstring_us_international.h"
 
@@ -73,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     // NAV
 	[_NAV] = LAYOUT(
-        KC_TAB, KC_PGDN, KC_UP, KC_PGUP, KC_TRNS,                       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TAB, KC_PGUP, KC_UP, KC_PGDN, KC_TRNS,                       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS,                    KC_TRNS, KC_LGUI, KC_NO, LCTL(KC_LALT), LCA(KC_LSFT),
         KC_TRNS, KC_HOME, KC_TRNS, KC_END, KC_TRNS,                     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
@@ -109,7 +108,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // SPECIALS
 	[_SPECIALS] = LAYOUT(
         KC_TRNS, KC_TRNS, US_EURO, KC_ESC, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_DEL,
-        KC_TRNS, KC_PERC, KC_SLSH, KC_ENT, KC_TRNS,                    DF(1), KC_LGUI, KC_TRNS, KC_TRNS, QK_DEBUG_TOGGLE,
+        KC_AT, KC_PERC, KC_SLSH, KC_ENT, KC_TRNS,                    DF(2), KC_LGUI, KC_TRNS, KC_TRNS, QK_DEBUG_TOGGLE,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_EXLM, KC_TRNS,                   DF(0), KC_TRNS, RALT_T(KC_COMM), RCTL_T(KC_DOT), QK_BOOT,
         KC_TRNS, KC_TAB, KC_NO, KC_TRNS
     ),
@@ -122,6 +121,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
+void keyboard_pre_init_user(void) {
+  // Set our LED pin as output
+  setPinOutput(24);
+  // Turn the LED off
+  // (Due to technical reasons, high is off and low is on)
+  writePinHigh(24);
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // If console is enabled, it will print the matrix position and status of each key pressed
@@ -129,4 +135,36 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     uprintf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int: %u, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
 #endif
   return true;
+}
+
+
+bool oled_task_user(void) {
+    if (is_keyboard_master()) {
+        render_default_layer_state(0, 1);
+
+        //render_space();
+        //render_layer_state();
+        // render_space();
+        //render_mod_status_gui_alt(get_mods()|get_oneshot_mods());
+        //render_mod_status_ctrl_shift(get_mods()|get_oneshot_mods());
+
+        render_rgb_hsv(2, 9);
+
+        oled_advance_page(true);
+    } else {
+        //oled_write_P(PSTR("second"), false);
+        oled_render_mario(2, 10);
+        // show the current layer
+        //render_default_layer_state(1, 2);
+    }
+    return false;
+}
+
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    if (is_keyboard_master()) {
+        uint8_t current_layer = get_highest_layer(state);
+        oled_render_current_layer(current_layer, 0, 0);
+    }
+  return state;
 }

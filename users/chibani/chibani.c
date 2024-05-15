@@ -1,33 +1,27 @@
 #include "chibani.h"
-#include <string.h>
+#include "oled/oled_assets.h"
 
-const char *get_layer_name_string(layer_state_t state, bool alt_name) {
-    switch (get_highest_layer(state)) {
+const char *get_layer_name_string(uint8_t layer) {
+    switch (layer) {
         case _QWERTY:
-            return alt_name ? "Num Pad" : "QWERTY";
-        case _COLEMAK:
-            return "Colemak";
-        case _COLEMAK_DH:
-            return "Colemak-DH";
-        case _DVORAK:
-            return "Dvorak";
-        case _GAMEPAD:
-            return "Gamepad";
-        case _DIABLO:
-            return "Diablo";
-        case _DIABLOII:
-            return "Diablo II";
-        case _MOUSE:
-            return alt_name ? "Macros" : "Mouse";
+            return OLED_RENDER_LAYOUT_QWERTY;
         case _MEDIA:
-            return "Media";
-        case _LOWER:
-            return "Lower";
-        case _RAISE:
-            return "Raise";
-        case _ADJUST:
-            return "Adjust";
+            return OLED_RENDER_LAYOUT_MEDIA;
+        case _NAV:
+            return OLED_RENDER_LAYOUT_NAV;
+        case _ACCENTS:
+            return OLED_RENDER_LAYOUT_ACCENTS;
+        case _SYMBOLS:
+            return OLED_RENDER_LAYOUT_SYMBOLS;
+        case _FUNCTIONS:
+            return OLED_RENDER_LAYOUT_FUNCTIONS;
+        case _NUMBERS:
+            return OLED_RENDER_LAYOUT_NUMBERS;
+        case _SPECIALS:
+            return OLED_RENDER_LAYOUT_SPECIALS;
+        case _LAFRONCE:
+            return OLED_RENDER_LAYOUT_LAFRONCE;
         default:
-            return "Unknown";
+            return "UNDEFINED";
     }
 }

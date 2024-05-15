@@ -18,7 +18,13 @@ RGBLIGHT_DRIVER = ws2812
 WS2812_DRIVER_REQUIRED = yes
 WS2812_DRIVER = vendor # Use the RP2040's PIO interface
 
+OLED_ENABLE = yes
+# OLED_VERBOSE = yes
+
 UNICODEMAP_ENABLE = yes
 
 CONSOLE_ENABLE = yes
 
+SRC += $(USER_PATH)/chibani.c
+
+include $(USER_PATH)/oled/rules.mk

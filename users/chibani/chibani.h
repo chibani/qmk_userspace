@@ -3,7 +3,7 @@
 #include QMK_KEYBOARD_H
 
 #if defined(OLED_ENABLE)
-#    include "oled/oled.h"
+#  include "oled/oled.h"
 #endif
 
 enum userspace_layers {
@@ -17,3 +17,5 @@ enum userspace_layers {
     _SPECIALS,
     _LAFRONCE,
 };
+
+const char *get_layer_name_string(uint8_t layer);

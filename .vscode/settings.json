@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "dotenv": "ini",
+        "chibani.h": "c"
+    }
+}

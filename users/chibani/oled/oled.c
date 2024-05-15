@@ -1,35 +1,66 @@
 #include "chibani.h"
+#include "quantum.h"
+#include "oled/oled_assets.h"
+#include <ctype.h>
 
-/**
- * @brief Renders the modifier state
- *
- * @param modifiers Modifiers to check against (real, weak, onesheot, etc;)
- */
-void render_mod_status(uint8_t modifiers, uint8_t col, uint8_t line) {
-    static const char PROGMEM mod_status[5][3] = {
-        {0xE8, 0xE9, 0}, {0xE4, 0xE5, 0}, {0xE6, 0xE7, 0}, {0xEA, 0xEB, 0}, {0xEC, 0xED, 0}};
-#if defined(OLED_DISPLAY_VERBOSE)
+
+void oled_render_mario(uint8_t col, uint8_t line) {
+    static uint16_t timer = 0;
+    static uint8_t  frame = 0;
+    if (timer_elapsed(timer) > 50) {
+        frame++;
+        if (frame == 3) {
+            frame = 0;
+        }
+        timer = timer_read();
+    }
+    for (uint8_t i = 0; i < 4; i++) {
+        oled_set_cursor(col, line + i);
+        oled_write_raw_P(mario_animation[frame][i], sizeof(mario_animation[0][0]));
+    }
+}
+
+void render_rgb_hsv(uint8_t col, uint8_t line) {
     oled_set_cursor(col, line);
+    oled_write_P(PSTR("HSV: "), false);
+#ifdef RGB_MATRIX_ENABLE
+    oled_write(get_u8_str(rgb_matrix_get_hue(), ' '), false);
+    oled_write_P(PSTR(", "), false);
+    oled_write(get_u8_str(rgb_matrix_get_sat(), ' '), false);
+    oled_write_P(PSTR(", "), false);
+    oled_write(get_u8_str(rgb_matrix_get_val(), ' '), false);
+#elif RGBLIGHT_ENABLE
+    if (is_rgblight_startup_running()) {
+        oled_write_P(PSTR("Start Animation"), false);
+    } else {
+        oled_write(get_u8_str(rgblight_get_hue(), ' '), false);
+        oled_write_P(PSTR(", "), false);
+        oled_write(get_u8_str(rgblight_get_sat(), ' '), false);
+        oled_write_P(PSTR(", "), false);
+        oled_write(get_u8_str(rgblight_get_val(), ' '), false);
+    }
 #endif
-    bool is_caps = host_keyboard_led_state().caps_lock;
-#ifdef CAPS_WORD_ENABLE
-    is_caps |= is_caps_word_on();
-#endif
-    oled_write_P(PSTR(OLED_RENDER_MODS_NAME), false);
-#if defined(OLED_DISPLAY_VERBOSE)
-    oled_write_P(mod_status[0], (modifiers & MOD_BIT(KC_LSFT)) || is_caps);
-    oled_write_P(mod_status[!keymap_config.swap_lctl_lgui ? 3 : 4], (modifiers & MOD_BIT(KC_LGUI)));
-    oled_write_P(mod_status[2], (modifiers & MOD_BIT(KC_LALT)));
-    oled_write_P(mod_status[1], (modifiers & MOD_BIT(KC_LCTL)));
-    oled_write_P(mod_status[1], (modifiers & MOD_BIT(KC_RCTL)));
-    oled_write_P(mod_status[2], (modifiers & MOD_BIT(KC_RALT)));
-    oled_write_P(mod_status[!keymap_config.swap_lctl_lgui ? 3 : 4], (modifiers & MOD_BIT(KC_RGUI)));
-    oled_write_P(mod_status[0], (modifiers & MOD_BIT(KC_RSFT)) || is_caps);
+}
+
+void render_default_layer_state(uint8_t col, uint8_t line) {
+    oled_set_cursor(col, line);
+#ifdef OLED_DISPLAY_VERBOSE
+    static char          layer_state_buffer[11] = {0};
+    static layer_state_t old_state              = 0;
+
+    if (old_state != default_layer_state) {
+        snprintf(layer_state_buffer, sizeof(layer_state_buffer), "%-10s",
+                 get_layer_name_string(default_layer_state, false));
+        old_state = default_layer_state;
+    }
+    oled_write(layer_state_buffer, false);
+    oled_advance_page(true);
 #else
-    oled_write_P(mod_status[0], (modifiers & MOD_MASK_SHIFT) || is_caps);
-    oled_write_P(mod_status[!keymap_config.swap_lctl_lgui ? 3 : 4], (modifiers & MOD_MASK_GUI));
-    oled_write_P(PSTR(" "), false);
-    oled_write_P(mod_status[2], (modifiers & MOD_MASK_ALT));
-    oled_write_P(mod_status[1], (modifiers & MOD_MASK_CTRL));
+    oled_write(get_layer_name_string(get_highest_layer(default_layer_state)), false);
 #endif
+}
+
+void oled_render_current_layer(uint8_t layer, uint8_t col, uint8_t line) {
+    oled_set_cursor(col, line);
+    oled_write(get_layer_name_string(layer), false);
 }
