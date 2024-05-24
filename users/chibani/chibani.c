@@ -21,6 +21,8 @@ const char *get_layer_name_string(uint8_t layer) {
             return OLED_RENDER_LAYOUT_SPECIALS;
         case _LAFRONCE:
             return OLED_RENDER_LAYOUT_LAFRONCE;
+        case _EMOJI:
+            return OLED_RENDER_LAYOUT_EMOJI;
         default:
             return "UNDEFINED";
     }

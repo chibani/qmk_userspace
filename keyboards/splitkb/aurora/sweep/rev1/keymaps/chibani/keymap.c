@@ -22,6 +22,20 @@ enum unicode_names {
     U_UGRAV_UPPER,
     U_OE_LOWER,
     U_OE_UPPER,
+    U_OCIRC_LOWER,
+    U_OCIRC_UPPER,
+    U_MEDIANDOT,
+    U_INVERTEDQUESTION,
+    U_INVERTEDEXCLAMATION,
+
+    U_FACE_HOLDING_TEARS,
+    U_FACE_LOUDLY_CRYING,
+    U_FACE_MELTING,
+    U_FACE_THINKING,
+    U_FACE_GRIMACING,
+    U_FACE_CLOWN,
+    U_FACE_PARTYPOPPER,
+    U_FACE_CONFETTIBALL,
 };
 
 const uint32_t PROGMEM unicode_map[] = {
@@ -43,6 +57,23 @@ const uint32_t PROGMEM unicode_map[] = {
     [U_UGRAV_UPPER] = 0x00d9,  // Ù
     [U_OE_LOWER] = 0x0153,  // œ
     [U_OE_UPPER] = 0x0152,  // Œ
+    [U_OCIRC_LOWER] = 0x00f4,  // ô
+    [U_OCIRC_UPPER] = 0x00d4,  // Ô
+    [U_MEDIANDOT] = 0x00b7, // median dot
+    [U_INVERTEDQUESTION] = 0x00bf, // inverted question
+    [U_INVERTEDEXCLAMATION] = 0x00a1, // inverted question
+
+    [U_FACE_HOLDING_TEARS] = 0x1F979, // emoji holding tears
+    [U_FACE_LOUDLY_CRYING] = 0x1F62D, // 😭
+
+    [U_FACE_MELTING] = 0x1FAE0, // melting face
+    [U_FACE_THINKING] = 0x1F914, // 🤔
+
+    [U_FACE_GRIMACING] = 0x1F62C, // 😬
+    [U_FACE_CLOWN] = 0x1F921, // 🤡
+
+    [U_FACE_PARTYPOPPER] = 0x1F389, //
+    [U_FACE_CONFETTIBALL] = 0x1F38A, //
 };
 
 #define U_AE UP(AE_LOWER, AE_UPPER)
@@ -54,6 +85,13 @@ const uint32_t PROGMEM unicode_map[] = {
 #define U_EDIAC UP(U_EDIAC_LOWER, U_EDIAC_UPPER)
 #define U_IDIAE UP(U_IDIAE_LOWER, U_IDIAE_UPPER)
 #define U_OE UP(U_OE_LOWER, U_OE_UPPER)
+#define U_OCIRC UP(U_OCIRC_LOWER, U_OCIRC_UPPER)
+#define U_QUESTIONEXCLAMATION UP(U_INVERTEDQUESTION, U_INVERTEDEXCLAMATION)
+
+#define U_FACE_CRY UP(U_FACE_LOUDLY_CRYING, U_FACE_HOLDING_TEARS)
+#define U_FACE_THINK UP(U_FACE_THINKING, U_FACE_MELTING)
+#define U_FACE_GRIMACING UP(U_FACE_GRIMACING, U_FACE_CLOWN)
+#define U_FACE_CONFETTI UP(U_FACE_PARTYPOPPER, U_FACE_CONFETTIBALL)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // QWERTY
@@ -61,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_Q, KC_W, KC_E, KC_R, KC_T,                                    KC_Y, KC_U, KC_I, KC_O, KC_P,
         LSFT_T(KC_A), LT(_FUNCTIONS,KC_S), LT(_MEDIA,KC_D), LT(_ACCENTS,KC_F), KC_G,                KC_H, LT(_SYMBOLS,KC_J), LT(_NAV,KC_K), LT(_NUMBERS,KC_L), RSFT_T(KC_SCLN),
         KC_Z, LCTL_T(KC_X), LALT_T(KC_C), KC_V, KC_B,                    KC_N, KC_M, LALT_T(KC_COMM), LCTL_T(KC_DOT), KC_SLSH,
-        KC_P0, KC_BSPC,                                                  LT(_SPECIALS,KC_SPC), LT(_LAFRONCE,KC_P1)
+        LT(_EMOJI, KC_0), KC_BSPC,                                                  LT(_SPECIALS,KC_SPC), LT(_LAFRONCE,KC_P1)
     ),
     // MEDIA
     [_MEDIA] = LAYOUT(
@@ -107,18 +145,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     // SPECIALS
 	[_SPECIALS] = LAYOUT(
-        KC_TRNS, KC_TRNS, US_EURO, KC_ESC, KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_DEL,
-        KC_AT, KC_PERC, KC_SLSH, KC_ENT, KC_TRNS,                    DF(2), KC_LGUI, KC_TRNS, KC_TRNS, QK_DEBUG_TOGGLE,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_EXLM, KC_TRNS,                   DF(0), KC_TRNS, RALT_T(KC_COMM), RCTL_T(KC_DOT), QK_BOOT,
+        KC_ESC, KC_TRNS, US_EURO, KC_TRNS , KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_DEL,
+        LSFT_T(KC_AT), KC_PERC, KC_DLR, KC_ENT, KC_TRNS,                    DF(_NAV), KC_LGUI, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_EXLM, KC_TRNS,                   DF(_QWERTY), KC_TRNS, RALT_T(KC_COMM), RCTL_T(KC_DOT), QK_BOOT,
         KC_TRNS, KC_TAB, KC_NO, KC_TRNS
     ),
     // QWERTY-LAFAYETTish
     [_LAFRONCE] = LAYOUT(
         KC_X, U_EGRAV, U_ECIRC, US_EACU, KC_TRNS,                   KC_TRNS, U_UGRAV, U_IDIAE, U_OE, KC_TRNS,
-        U_AGRAV, U_AE, U_EDIAC, KC_TRNS, KC_TRNS,              KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        U_ACIRC, KC_TRNS, US_CCED, KC_TRNS, KC_TRNS,                   KC_TRNS, US_MICR, KC_TRNS, KC_TRNS, KC_TRNS,
+        U_AGRAV, U_AE, U_EDIAC, KC_TRNS, KC_TRNS,              KC_TRNS, KC_TRNS, KC_TRNS, U_OCIRC, KC_TRNS,
+        U_ACIRC, KC_TRNS, US_CCED, KC_TRNS, KC_TRNS,                   KC_TRNS, US_MICR, KC_TRNS, UM(U_MEDIANDOT), KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_NO
-    )
+    ),
+    [_EMOJI] = LAYOUT(
+        U_FACE_CONFETTI, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                   U_FACE_THINK, U_FACE_GRIMACING, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,              KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                   U_FACE_CRY, KC_TRNS, KC_TRNS, KC_TRNS, U_QUESTIONEXCLAMATION,
+        KC_NO, KC_TRNS, KC_TRNS, KC_TRNS
+    ),
 };
 
 void keyboard_pre_init_user(void) {
@@ -144,16 +188,17 @@ bool oled_task_user(void) {
 
         //render_space();
         //render_layer_state();
-        // render_space();
-        //render_mod_status_gui_alt(get_mods()|get_oneshot_mods());
-        //render_mod_status_ctrl_shift(get_mods()|get_oneshot_mods());
+        //render_space();
+        oled_set_cursor(0, 4);
+        render_mod_status_gui_alt(get_mods()|get_oneshot_mods());
+        render_mod_status_ctrl_shift(get_mods()|get_oneshot_mods());
 
         render_rgb_hsv(2, 9);
 
         oled_advance_page(true);
     } else {
         //oled_write_P(PSTR("second"), false);
-        oled_render_mario(2, 10);
+        //oled_render_mario(2, 10);
         // show the current layer
         //render_default_layer_state(1, 2);
     }

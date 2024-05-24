@@ -16,6 +16,7 @@ enum userspace_layers {
     _NUMBERS,
     _SPECIALS,
     _LAFRONCE,
+    _EMOJI,
 };
 
 const char *get_layer_name_string(uint8_t layer);

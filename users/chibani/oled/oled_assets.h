@@ -2,15 +2,16 @@
 
 // clang-format off
 
-#    define OLED_RENDER_LAYOUT_QWERTY     "QWER"
-#    define OLED_RENDER_LAYOUT_NAV        "Nav "
-#    define OLED_RENDER_LAYOUT_MEDIA      "Medi"
-#    define OLED_RENDER_LAYOUT_ACCENTS    "Acc "
-#    define OLED_RENDER_LAYOUT_SYMBOLS    "Symb"
-#    define OLED_RENDER_LAYOUT_FUNCTIONS  "Func"
-#    define OLED_RENDER_LAYOUT_NUMBERS    "Num "
-#    define OLED_RENDER_LAYOUT_SPECIALS   "Spec"
-#    define OLED_RENDER_LAYOUT_LAFRONCE   "FR  "
+#    define OLED_RENDER_LAYOUT_QWERTY     "QWERT"
+#    define OLED_RENDER_LAYOUT_NAV        "Nav  "
+#    define OLED_RENDER_LAYOUT_MEDIA      "Media"
+#    define OLED_RENDER_LAYOUT_ACCENTS    "Accen"
+#    define OLED_RENDER_LAYOUT_SYMBOLS    "Symbol"
+#    define OLED_RENDER_LAYOUT_FUNCTIONS  "Funct"
+#    define OLED_RENDER_LAYOUT_NUMBERS    "Num  "
+#    define OLED_RENDER_LAYOUT_SPECIALS   "Spec "
+#    define OLED_RENDER_LAYOUT_LAFRONCE   "Fr   "
+#    define OLED_RENDER_LAYOUT_EMOJI   "Emoji"
 
 static const char PROGMEM mario_animation[4][4][16] = {
     {

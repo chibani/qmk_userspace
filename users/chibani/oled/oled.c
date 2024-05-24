@@ -7,7 +7,7 @@
 void oled_render_mario(uint8_t col, uint8_t line) {
     static uint16_t timer = 0;
     static uint8_t  frame = 0;
-    if (timer_elapsed(timer) > 50) {
+    if (timer_elapsed(timer) > 200) {
         frame++;
         if (frame == 3) {
             frame = 0;
