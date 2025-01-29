@@ -112,7 +112,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_Q, KC_W, KC_E, KC_R, KC_T,                                    KC_Y, KC_U, KC_I, KC_O, KC_P,
         LSFT_T(KC_A), LT(_FUNCTIONS,KC_S), LT(_MEDIA,KC_D), LT(_ACCENTS,KC_F), KC_G,                KC_H, LT(_SYMBOLS,KC_J), LT(_NAV,KC_K), LT(_NUMBERS,KC_L), RSFT_T(KC_SCLN),
         KC_Z, LCTL_T(KC_X), LALT_T(KC_C), KC_V, KC_B,                    KC_N, KC_M, LALT_T(KC_COMM), LCTL_T(KC_DOT), KC_SLSH,
-        LT(_EMOJI, KC_0), KC_BSPC,                                                  LT(_SPECIALS,KC_SPC), LT(_LAFRONCE,KC_P1)
+        LT(_EMOJI, KC_0), LT(_NAV, KC_BSPC),                                                  LT(_SPECIALS,KC_SPC), LT(_LAFRONCE,KC_P1)
     ),
     // MEDIA
     [_MEDIA] = LAYOUT(
@@ -126,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB, KC_PGUP, KC_UP, KC_PGDN, KC_TRNS,                       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS,                    KC_TRNS, KC_LGUI, KC_NO, LCTL(KC_LALT), LCA(KC_LSFT),
         KC_TRNS, KC_HOME, KC_TRNS, KC_END, KC_TRNS,                     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+        KC_TRNS, KC_TAB, KC_TRNS, KC_TRNS
     ),
     // ACCENTS
 	[_ACCENTS] = LAYOUT(
@@ -161,7 +161,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC, KC_TRNS, US_EURO, KC_TRNS , KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_DEL,
         LSFT_T(KC_AT), KC_PERC, KC_DLR, KC_ENT, KC_TRNS,                    DF(_NAV), KC_LGUI, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_EXLM, KC_TRNS,                   DF(_QWERTY), KC_TRNS, RALT_T(KC_COMM), RCTL_T(KC_DOT), QK_BOOT,
-        KC_TRNS, KC_TAB, KC_NO, KC_TRNSzz
+        KC_TRNS, KC_TAB, KC_NO, KC_TRNS
     ),
     // QWERTY-LAFAYETTish
     [_LAFRONCE] = LAYOUT(
@@ -171,7 +171,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TRNS, KC_TRNS, KC_TRNS, KC_NO
     ),
     [_EMOJI] = LAYOUT(
-        U_FACE_CONFETTI, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                   U_FACE_THINK, U_FACE_GRIMACING, KC_TRNS, KC_TRNS, M_MAGE_PPRD,
+        U_FACE_CONFETTI, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                   U_FACE_THINK, U_FACE_GRIMACING, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,              KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                   U_FACE_CRY, KC_TRNS, KC_TRNS, KC_TRNS, U_QUESTIONEXCLAMATION,
         KC_NO, KC_TRNS, KC_TRNS, KC_TRNS
@@ -209,11 +209,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SS_TAP(X_GRAVE) SS_TAP(X_SPC) SS_TAP(X_GRAVE) SS_TAP(X_SPC) SS_TAP(X_GRAVE) SS_TAP(X_SPC));
             }
             break;
-        case M_MAGE_PPRD:
-            if (record->event.pressed) {
-                SEND_STRING("Majorel a fait une redescente de prod vers la preprod. L'API est HS");
-            }
-            break;
     }
 
   // If console is enabled, it will print the matrix position and status of each key pressed
@@ -224,6 +219,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 
+#ifdef OLED_ENABLE
 bool oled_task_user(void) {
     if (is_keyboard_master()) {
         render_default_layer_state(0, 1);
@@ -247,11 +243,12 @@ bool oled_task_user(void) {
     return false;
 }
 
-
 layer_state_t layer_state_set_user(layer_state_t state) {
     if (is_keyboard_master()) {
         uint8_t current_layer = get_highest_layer(state);
+
         oled_render_current_layer(current_layer, 0, 0);
     }
   return state;
 }
+#endif
