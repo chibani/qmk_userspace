@@ -126,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB, KC_PGUP, KC_UP, KC_PGDN, KC_TRNS,                       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
         KC_TRNS, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS,                    KC_TRNS, KC_LGUI, KC_NO, LCTL(KC_LALT), LCA(KC_LSFT),
         KC_TRNS, KC_HOME, KC_TRNS, KC_END, KC_TRNS,                     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TAB, KC_TRNS, KC_TRNS
+        KC_TAB, KC_TRNS, KC_TRNS, KC_TRNS
     ),
     // ACCENTS
 	[_ACCENTS] = LAYOUT(
@@ -159,8 +159,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // SPECIALS
 	[_SPECIALS] = LAYOUT(
         KC_ESC, KC_TRNS, US_EURO, KC_TRNS , KC_TRNS,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_DEL,
-        LSFT_T(KC_AT), KC_PERC, KC_DLR, KC_ENT, KC_TRNS,                    DF(_NAV), KC_LGUI, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_EXLM, KC_TRNS,                   DF(_QWERTY), KC_TRNS, RALT_T(KC_COMM), RCTL_T(KC_DOT), QK_BOOT,
+        LSFT_T(KC_AT), KC_PERC, KC_DLR, KC_ENT, KC_TRNS,                    KC_TRNS, KC_LGUI, KC_TRNS, KC_TRNS, KC_TRNS,
+        KC_TRNS, KC_TRNS, KC_TRNS, KC_EXLM, KC_TRNS,                   KC_TRNS, KC_TRNS, RALT_T(KC_COMM), RCTL_T(KC_DOT), QK_BOOT,
         KC_TRNS, KC_TAB, KC_NO, KC_TRNS
     ),
     // QWERTY-LAFAYETTish
