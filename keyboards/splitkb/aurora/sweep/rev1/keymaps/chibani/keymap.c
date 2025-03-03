@@ -12,6 +12,8 @@ enum unicode_names {
     U_ACIRC_UPPER,
     U_EGRAV_LOWER,
     U_EGRAV_UPPER,
+    U_EACUT_LOWER,
+    U_EACUT_UPPER,
     U_ECIRC_LOWER,
     U_ECIRC_UPPER,
     U_EDIAC_LOWER,
@@ -26,6 +28,10 @@ enum unicode_names {
     U_OE_UPPER,
     U_OCIRC_LOWER,
     U_OCIRC_UPPER,
+    U_ODIAC_LOWER,
+    U_ODIAC_UPPER,
+    U_CCEDIL_LOWER,
+    U_CCEDIL_UPPER,
     U_MEDIANDOT,
     U_INVERTEDQUESTION,
     U_INVERTEDEXCLAMATION,
@@ -49,6 +55,8 @@ const uint32_t PROGMEM unicode_map[] = {
     [U_ACIRC_UPPER] = 0x00c2,  // Â
     [U_EGRAV_LOWER] = 0x00e8,  // è
     [U_EGRAV_UPPER] = 0x00c8,  // È
+    [U_EACUT_LOWER] = 0x00e9,  // é
+    [U_EACUT_UPPER] = 0x00c9,  // É
     [U_ECIRC_LOWER] = 0x00ea,  // ê
     [U_ECIRC_UPPER] = 0x00ca,  // Ê
     [U_EDIAC_LOWER] = 0x00eb,  // ë
@@ -63,6 +71,10 @@ const uint32_t PROGMEM unicode_map[] = {
     [U_OE_UPPER] = 0x0152,  // Œ
     [U_OCIRC_LOWER] = 0x00f4,  // ô
     [U_OCIRC_UPPER] = 0x00d4,  // Ô
+    [U_ODIAC_LOWER] = 0x00f6,  // o trema
+    [U_ODIAC_UPPER] = 0x00d6,  // O trema
+    [U_CCEDIL_LOWER] = 0x00e7,  // c cedille
+    [U_CCEDIL_UPPER] = 0x00c7,  // C cedille
     [U_MEDIANDOT] = 0x00b7, // median dot
     [U_INVERTEDQUESTION] = 0x00bf, // inverted question
     [U_INVERTEDEXCLAMATION] = 0x00a1, // inverted exclamation
@@ -86,11 +98,14 @@ const uint32_t PROGMEM unicode_map[] = {
 #define U_UCIRC UP(U_UCIRC_LOWER, U_UCIRC_UPPER)
 #define U_ACIRC UP(U_ACIRC_LOWER, U_ACIRC_UPPER)
 #define U_EGRAV UP(U_EGRAV_LOWER, U_EGRAV_UPPER)
+#define U_EACUT UP(U_EACUT_LOWER, U_EACUT_UPPER)
 #define U_ECIRC UP(U_ECIRC_LOWER, U_ECIRC_UPPER)
 #define U_EDIAC UP(U_EDIAC_LOWER, U_EDIAC_UPPER)
 #define U_IDIAE UP(U_IDIAE_LOWER, U_IDIAE_UPPER)
 #define U_OE UP(U_OE_LOWER, U_OE_UPPER)
 #define U_OCIRC UP(U_OCIRC_LOWER, U_OCIRC_UPPER)
+#define U_ODIAC UP(U_ODIAC_LOWER, U_ODIAC_UPPER)
+#define U_CCEDIL UP(U_CCEDIL_LOWER, U_CCEDIL_UPPER)
 #define U_QUESTIONEXCLAMATION UP(U_INVERTEDQUESTION, U_INVERTEDEXCLAMATION)
 
 #define U_FACE_CRY UP(U_FACE_LOUDLY_CRYING, U_FACE_HOLDING_TEARS)
@@ -165,9 +180,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     // QWERTY-LAFAYETTish
     [_LAFRONCE] = LAYOUT(
-        KC_X, U_EGRAV, U_ECIRC, US_EACU, KC_TRNS,                   KC_TRNS, U_UGRAV, U_IDIAE, U_OCIRC, KC_TRNS,
+        KC_X, U_EGRAV, U_ECIRC, U_EACUT, KC_TRNS,                   KC_TRNS, U_UGRAV, U_IDIAE, U_OCIRC, U_ODIAC,
         U_AGRAV, U_AE, U_EDIAC, KC_TRNS, KC_TRNS,              KC_TRNS, U_UCIRC, KC_TRNS, U_OE, KC_TRNS,
-        U_ACIRC, KC_TRNS, US_CCED, KC_TRNS, KC_TRNS,                   KC_TRNS, US_MICR, KC_TRNS, UM(U_MEDIANDOT), KC_TRNS,
+        U_ACIRC, KC_TRNS, U_CCEDIL, KC_TRNS, KC_TRNS,                   KC_TRNS, US_MICR, KC_TRNS, UM(U_MEDIANDOT), KC_TRNS,
         KC_TRNS, KC_TRNS, KC_TRNS, KC_NO
     ),
     [_EMOJI] = LAYOUT(
@@ -227,13 +242,14 @@ bool oled_task_user(void) {
         //render_space();
         //render_layer_state();
         //render_space();
-        oled_set_cursor(0, 4);
+        oled_set_cursor(0, 3);
         render_mod_status_gui_alt(get_mods()|get_oneshot_mods());
         render_mod_status_ctrl_shift(get_mods()|get_oneshot_mods());
 
-        render_rgb_hsv(2, 9);
+        //render_rgb_hsv(2, 9);
+        oled_render_mario(2, 12);
 
-        oled_advance_page(true);
+        //oled_advance_page(true);
     } else {
         //oled_write_P(PSTR("second"), false);
         //oled_render_mario(2, 10);
