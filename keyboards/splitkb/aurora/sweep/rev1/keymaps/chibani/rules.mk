@@ -19,7 +19,8 @@ WS2812_DRIVER_REQUIRED = yes
 WS2812_DRIVER = vendor # Use the RP2040's PIO interface
 
 OLED_ENABLE = yes
-OLED_VERBOSE = yes
+OLED_VERBOSE = no
+WPM_ENABLE = yes
 
 UNICODEMAP_ENABLE = yes
 

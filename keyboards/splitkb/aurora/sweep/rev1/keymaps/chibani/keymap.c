@@ -3,6 +3,8 @@
 #include "keymap_us_international.h"
 #include "sendstring_us_international.h"
 
+bool is_oled_enabled = true;  // Default state for OLED
+
 enum unicode_names {
     AE_LOWER,
     AE_UPPER,
@@ -118,7 +120,7 @@ enum custom_keycodes {
   M_DQUO,
   M_GRV,
   M_TRIPLEGRV,
-  M_MAGE_PPRD,
+  M_TOGGLE_OLED,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -134,7 +136,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         RGB_TOG, RGB_SPI, RGB_HUI, RGB_SAI, RGB_VAI,                     KC_TRNS, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,
         RGB_MOD, KC_BTN2, KC_NO, KC_BTN1, KC_TRNS,                       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MUTE,
         RGB_RMOD, RGB_SPD, RGB_HUD, RGB_SAD, RGB_VAD,                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_VOLD,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+        M_TOGGLE_OLED, KC_TRNS, KC_TRNS, KC_TRNS
     ),
     // NAV
 	[_NAV] = LAYOUT(
@@ -224,6 +226,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SS_TAP(X_GRAVE) SS_TAP(X_SPC) SS_TAP(X_GRAVE) SS_TAP(X_SPC) SS_TAP(X_GRAVE) SS_TAP(X_SPC));
             }
             break;
+        case M_TOGGLE_OLED:
+            if (record->event.pressed) {
+                is_oled_enabled = !is_oled_enabled;
+            }
+            break;
     }
 
   // If console is enabled, it will print the matrix position and status of each key pressed
@@ -236,6 +243,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 #ifdef OLED_ENABLE
 bool oled_task_user(void) {
+    if (!is_oled_enabled){
+        oled_off();
+        return false;
+    }
     if (is_keyboard_master()) {
         render_default_layer_state(0, 1);
 
@@ -245,6 +256,10 @@ bool oled_task_user(void) {
         oled_set_cursor(0, 3);
         render_mod_status_gui_alt(get_mods()|get_oneshot_mods());
         render_mod_status_ctrl_shift(get_mods()|get_oneshot_mods());
+
+        render_space();
+
+        oled_write(get_u8_str(get_current_wpm(), '0'), false);
 
         //render_rgb_hsv(2, 9);
         oled_render_mario(2, 12);
